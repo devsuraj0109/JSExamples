@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial مقاومة-scale=1.0">
     <title>IBM Stock Data</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -10,6 +10,16 @@
 <body>
     <div class="container">
         <h1>IBM Daily Stock Data</h1>
+        <div class="controls">
+            <div class="date-selector">
+                <label for="dateInput">Select Date: </label>
+                <input type="date" id="dateInput" max="2025-05-08">
+            </div>
+            <label class="theme-toggle">
+                <input type="checkbox" id="themeToggleBtn">
+                <span class="slider"></span>
+            </label>
+        </div>
         <div id="metaData"></div>
         <canvas id="stockChart"></canvas>
         <div class="table-wrapper">
@@ -21,6 +31,7 @@
                         <th>High</th>
                         <th>Low</th>
                         <th>Close</th>
+                        <th>Change</th>
                         <th>Volume</th>
                     </tr>
                 </thead>
