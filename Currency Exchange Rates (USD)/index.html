@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Rates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white text-center mb-6">Currency Exchange Rates (USD)</h1>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 animate-fade-in">
+            <p class="text-gray-600 dark:text-gray-300"><strong>Date:</strong> <span id="date"></span></p>
+            <p class="text-gray-600 dark:text-gray-300"><strong>Provider:</strong> <a id="provider" href="#" target="_blank" class="text-blue-500 hover:underline"></a></p>
+            <p class="text-gray-600 dark:text-gray-300"><strong>Terms:</strong> <a id="terms" href="#" target="_blank" class="text-blue-500 hover:underline">View Terms</a></p>
+        </div>
+        <div class="search-container mb-6">
+            <input type="text" id="searchInput" placeholder="Search currency..." class="w-full max-w-md mx-auto block p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div id="loading" class="loading flex justify-center items-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+        </div>
+        <div id="error" class="error text-red-500 dark:text-red-400 text-center p-4 hidden"></div>
+        <div id="ratesTable" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hidden animate-fade-in">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-blue-600 text-white">
+                        <th class="p-4 text-left">Currency</th>
+                        <th class="p-4 text-left">Rate</th>
+                    </tr>
+                </thead>
+                <tbody id="ratesBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
