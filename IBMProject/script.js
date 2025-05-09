@@ -112,49 +112,72 @@ function displayStockData(timeSeries, selectedDate) {
                 {
                     label: 'Closing Price',
                     data: closes.reverse(),
-                    borderColor: isDarkMode ? '#34d399' : '#10b981',
+                    borderColor: isDarkMode ? '#68d391' : '#3182ce',
+                    borderWidth: 2,
+                    pointRadius: 0,
                     yAxisID: 'y',
-                    fill: false
+                    fill: false,
+                    tension: 0.2
                 },
                 {
                     label: 'Daily Change',
                     data: changes.reverse(),
-                    borderColor: isDarkMode ? '#60a5fa' : '#3b82f6',
+                    borderColor: isDarkMode ? '#90cdf4' : '#63b3ed',
+                    borderWidth: 2,
+                    pointRadius: 0,
                     yAxisID: 'y1',
                     fill: false,
+                    tension: 0.2,
                     hidden: !!displayDate
                 }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     title: {
                         display: true,
                         text: 'Date',
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748',
+                        font: {
+                            size: 12
+                        }
                     },
                     ticks: {
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748',
+                        maxTicksLimit: 8
+                    },
+                    grid: {
+                        display: false
                     }
                 },
                 y: {
                     title: {
                         display: true,
                         text: 'Price (USD)',
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748',
+                        font: {
+                            size: 12
+                        }
                     },
                     position: 'left',
                     ticks: {
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748'
+                    },
+                    grid: {
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                     }
                 },
                 y1: {
                     title: {
                         display: !displayDate,
                         text: 'Change (USD)',
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748',
+                        font: {
+                            size: 12
+                        }
                     },
                     position: 'right',
                     grid: {
@@ -162,7 +185,7 @@ function displayStockData(timeSeries, selectedDate) {
                     },
                     display: !displayDate,
                     ticks: {
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748'
                     }
                 }
             },
@@ -171,9 +194,25 @@ function displayStockData(timeSeries, selectedDate) {
                     position: 'top',
                     align: 'center',
                     labels: {
-                        color: isDarkMode ? '#f9fafb' : '#1f2937'
+                        color: isDarkMode ? '#e2e8f0' : '#2d3748',
+                        font: {
+                            size: 12
+                        },
+                        padding: 10
                     }
+                },
+                tooltip: {
+                    backgroundColor: isDarkMode ? '#2d3748' : '#ffffff',
+                    titleColor: isDarkMode ? '#e2e8f0' : '#2d3748',
+                    bodyColor: isDarkMode ? '#e2e8f0' : '#2d3748',
+                    borderColor: isDarkMode ? '#4a5568' : '#e2e8f0',
+                    borderWidth: 1,
+                    cornerRadius: 6
                 }
+            },
+            animation: {
+                duration: 500,
+                easing: 'easeOutQuad'
             }
         }
     });
