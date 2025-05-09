@@ -1,0 +1,65 @@
+body {
+    background-color: #f3f4f6;
+    font-family: Arial, sans-serif;
+    padding: 24px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #1f2937;
+}
+
+#metaData {
+    margin-bottom: 24px;
+}
+
+#metaData p {
+    margin: 4px 0;
+    color: #4b5563;
+}
+
+#stockChart {
+    margin-bottom: 24px;
+    max-width: 100%;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+#stockTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#stockTable th,
+#stockTable td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #e5e7eb;
+}
+
+#stockTable th {
+    background-color: #e5e7eb;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+#stockTable tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+#stockTable tbody tr:hover {
+    background-color: #f3f4f6;
+}
