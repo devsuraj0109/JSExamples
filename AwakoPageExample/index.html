@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Data Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .notes {
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .error {
+            color: red;
+        }
+        #upload-section {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Load Data Visualization</h1>
+    <div id="upload-section">
+        <input type="file" id="fileInput" accept=".pdf">
+        <button onclick="uploadFile()">Upload and Visualize</button>
+    </div>
+    <div id="content">
+        <div id="customer" class="section"></div>
+        <div id="rate-details" class="section"></div>
+        <div id="stops" class="section"></div>
+        <div id="notes" class="section"></div>
+    </div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const contentDiv = document.getElementById('content');
+            const customerDiv = document.getElementById('customer');
+            const rateDiv = document.getElementById('rate-details');
+            const stopsDiv = document.getElementById('stops');
+            const notesDiv = document.getElementById('notes');
+
+            // Clear previous content
+            customerDiv.innerHTML = '';
+            rateDiv.innerHTML = '';
+            stopsDiv.innerHTML = '';
+            notesDiv.innerHTML = '';
+
+            if (!fileInput.files[0]) {
+                contentDiv.innerHTML = '<p class="error">Please select a PDF file.</p>';
+                return;
+            }
+
+            // Create headers
+            const myHeaders = new Headers();
+            myHeaders.append('accept', '*/*');
+            myHeaders.append('accept-language', 'en-GB,en-US;q=0.9,en;q=0.8');
+            myHeaders.append('origin', 'https://app.awako.ai');
+            myHeaders.append('priority', 'u=1, i');
+            myHeaders.append('referer', 'https://app.awako.ai/');
+            myHeaders.append('sec-ch-ua', '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"');
+            myHeaders.append('sec-ch-ua-mobile', '?0');
+            myHeaders.append('sec-ch-ua-platform', '"macOS"');
+            myHeaders.append('sec-fetch-dest', 'empty');
+            myHeaders.append('sec-fetch-mode', 'cors');
+            myHeaders.append('sec-fetch-site', 'cross-site');
+            myHeaders.append('user-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36');
+
+            // Create form data
+            const formdata = new FormData();
+            formdata.append('files[]', fileInput.files[0], '16738 RATE copy.pdf');
+            formdata.append('auth-key', 'eLq7AagF2bD8qYYk2TaoqNu5tj9uxJ45');
+
+            // Request options
+            const requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: formdata,
+                redirect: 'follow'
+            };
+
+            try {
+                const response = await fetch('https://prime.etruckingsoft.com/multiple-files-upload', requestOptions);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                if (!data.data || !data.data['16738 RATE copy.pdf']) {
+                    throw new Error('Invalid response format');
+                }
+                renderData(data);
+            } catch (error) {
+                contentDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        function renderData(data) {
+            const fileData = data.data['16738 RATE copy.pdf'];
+            renderCustomerInfo(fileData.CustomerName);
+            renderRateDetails(fileData.RateDetails, fileData.LoadAmount);
+            renderStops(fileData.Stops);
+            renderNotes(fileData.Notes);
+        }
+
+        // Render customer info
+        function renderCustomerInfo(customer) {
+            const customerDiv = document.getElementById('customer');
+            customerDiv.innerHTML = `
+                <h2>Customer Information</h2>
+                <p><strong>Name:</strong> ${customer.Name || 'N/A'}</p>
+                <p><strong>Address:</strong> ${customer.Address1}, ${customer.City}, ${customer.State} ${customer.Zip}</p>
+                <p><strong>Phone:</strong> ${customer.Phone || 'N/A'}</p>
+                <p><strong>Email:</strong> ${customer.Email || 'N/A'}</p>
+                <p><strong>Fax:</strong> ${customer.Fax || 'N/A'}</p>
+                <p><strong>MC:</strong> ${customer.MC || 'N/A'}</p>
+                <p><strong>DOT:</strong> ${customer.DOT || 'N/A'}</p>
+            `;
+        }
+
+        // Render rate details (dynamic)
+        function renderRateDetails(details, loadAmount) {
+            const rateDiv = document.getElementById('rate-details');
+            let tableRows = '';
+            if (Array.isArray(details)) {
+                details.forEach(detail => {
+                    tableRows += `
+                        <tr>
+                            <td>${detail.DescriptionName || 'N/A'}</td>
+                            <td>$${detail.Amount || '0.00'}</td>
+                            <td>${detail.Units || 'N/A'}</td>
+                            <td>${detail.PER || 'N/A'}</td>
+                        </tr>
+                    `;
+                });
+            }
+            rateDiv.innerHTML = `
+                <h2>Rate Details (Total: $${loadAmount || '0.00'})</h2>
+                ${tableRows ? `
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Units</th>
+                            <th>Per</th>
+                        </tr>
+                        ${tableRows}
+                    </table>
+                ` : '<p>No rate details available.</p>'}
+            `;
+        }
+
+        // Render stops (dynamic)
+        function renderStops(stops) {
+            const stopsDiv = document.getElementById('stops');
+            let stopsHtml = '<h2>Stops</h2>';
+            if (Array.isArray(stops)) {
+                stops.forEach(stop => {
+                    const items = Array.isArray(stop.StopItems) ? stop.StopItems.map(item => `
+                        <li>Commodity: ${item.Commodity || 'N/A'}, Pallets: ${item.Pallets || 'N/A'}, Weight: ${item.Weight || 'N/A'}, PO: ${item.PONumber || 'N/A'}</li>
+                    `).join('') : '';
+                    stopsHtml += `
+                        <div class="section">
+                            <h3>Stop ${stop.StopNumber || 'N/A'} (${stop.StopType || 'N/A'})</h3>
+                            <p><strong>Facility:</strong> ${stop.FacilityName || 'N/A'}</p>
+                            <p><strong>Address:</strong> ${stop.Address1 || ''}, ${stop.City || ''}, ${stop.State || ''} ${stop.Zip || ''}</p>
+                            <p><strong>Date/Time:</strong> ${stop.FromDate || 'N/A'} ${stop.FromTime || ''}</p>
+                            <p><strong>Appointment Required:</strong> ${stop.IsAppRequired ? 'Yes' : 'No'}</p>
+                            <p><strong>PO Number:</strong> ${stop.PONumber || 'N/A'}</p>
+                            <p><strong>Notes:</strong> ${stop.Notes || 'N/A'}</p>
+                            <p><strong>Items:</strong></p>
+                            <ul>${items || '<li>No items available.</li>'}</ul>
+                        </div>
+                    `;
+                });
+            } else {
+                stopsHtml += '<p>No stops available.</p>';
+            }
+            stopsDiv.innerHTML = stopsHtml;
+        }
+
+        // Render notes
+        function renderNotes(notes) {
+            const notesDiv = document.getElementById('notes');
+            notesDiv.innerHTML = `
+                <h2>Notes</h2>
+                <div class="notes">${notes || 'No notes available.'}</div>
+            `;
+        }
+    </script>
+</body>
+</html>
